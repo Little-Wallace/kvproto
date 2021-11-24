@@ -1,0 +1,36 @@
+syntax = "proto3";
+package compaction;
+
+import "gogoproto/gogo.proto";
+import "coprocessor.proto";
+import "metapb.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+option java_package = "org.tikv.kvproto";
+
+
+// Dipsatch the task request to compact server..
+message CompactTaskRequest {
+	string db_id = 1; 
+    int64 store_id = 2;
+	int64 job_id = 3; 
+	string address = 4; 
+    bytes input = 5;
+}
+
+message Error {
+	int32 code = 1;
+	string msg = 2;
+}
+
+message CompactTaskResponse {
+    bytes output = 5;
+	Error error = 2;
+}
+
+service CompactService {
+  rpc compact(CompactTaskRequest) returns (CompactTaskResponse) {}
+}
