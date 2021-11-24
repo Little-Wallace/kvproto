@@ -32,8 +32,37 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
+type JobStatus int32
+
+const (
+	JobStatus_Running       JobStatus = 0
+	JobStatus_FallbackLocal JobStatus = 1
+	JobStatus_Finished      JobStatus = 2
+	JobStatus_Fail          JobStatus = 3
+)
+
+var JobStatus_name = map[int32]string{
+	0: "Running",
+	1: "FallbackLocal",
+	2: "Finished",
+	3: "Fail",
+}
+var JobStatus_value = map[string]int32{
+	"Running":       0,
+	"FallbackLocal": 1,
+	"Finished":      2,
+	"Fail":          3,
+}
+
+func (x JobStatus) String() string {
+	return proto.EnumName(JobStatus_name, int32(x))
+}
+func (JobStatus) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_compaction_f37a7ea11045ba34, []int{0}
+}
+
 // Dipsatch the task request to compact server..
-type CompactTaskRequest struct {
+type StartCompactRequest struct {
 	DbId                 string   `protobuf:"bytes,1,opt,name=db_id,json=dbId,proto3" json:"db_id,omitempty"`
 	StoreId              int64    `protobuf:"varint,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	JobId                int64    `protobuf:"varint,3,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
@@ -44,18 +73,18 @@ type CompactTaskRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CompactTaskRequest) Reset()         { *m = CompactTaskRequest{} }
-func (m *CompactTaskRequest) String() string { return proto.CompactTextString(m) }
-func (*CompactTaskRequest) ProtoMessage()    {}
-func (*CompactTaskRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_e934e97986a7e94a, []int{0}
+func (m *StartCompactRequest) Reset()         { *m = StartCompactRequest{} }
+func (m *StartCompactRequest) String() string { return proto.CompactTextString(m) }
+func (*StartCompactRequest) ProtoMessage()    {}
+func (*StartCompactRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_compaction_f37a7ea11045ba34, []int{0}
 }
-func (m *CompactTaskRequest) XXX_Unmarshal(b []byte) error {
+func (m *StartCompactRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CompactTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *StartCompactRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CompactTaskRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_StartCompactRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -65,47 +94,47 @@ func (m *CompactTaskRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (dst *CompactTaskRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CompactTaskRequest.Merge(dst, src)
+func (dst *StartCompactRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StartCompactRequest.Merge(dst, src)
 }
-func (m *CompactTaskRequest) XXX_Size() int {
+func (m *StartCompactRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *CompactTaskRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CompactTaskRequest.DiscardUnknown(m)
+func (m *StartCompactRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_StartCompactRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CompactTaskRequest proto.InternalMessageInfo
+var xxx_messageInfo_StartCompactRequest proto.InternalMessageInfo
 
-func (m *CompactTaskRequest) GetDbId() string {
+func (m *StartCompactRequest) GetDbId() string {
 	if m != nil {
 		return m.DbId
 	}
 	return ""
 }
 
-func (m *CompactTaskRequest) GetStoreId() int64 {
+func (m *StartCompactRequest) GetStoreId() int64 {
 	if m != nil {
 		return m.StoreId
 	}
 	return 0
 }
 
-func (m *CompactTaskRequest) GetJobId() int64 {
+func (m *StartCompactRequest) GetJobId() int64 {
 	if m != nil {
 		return m.JobId
 	}
 	return 0
 }
 
-func (m *CompactTaskRequest) GetAddress() string {
+func (m *StartCompactRequest) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-func (m *CompactTaskRequest) GetInput() []byte {
+func (m *StartCompactRequest) GetInput() []byte {
 	if m != nil {
 		return m.Input
 	}
@@ -124,7 +153,7 @@ func (m *Error) Reset()         { *m = Error{} }
 func (m *Error) String() string { return proto.CompactTextString(m) }
 func (*Error) ProtoMessage()    {}
 func (*Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_e934e97986a7e94a, []int{1}
+	return fileDescriptor_compaction_f37a7ea11045ba34, []int{1}
 }
 func (m *Error) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -167,26 +196,26 @@ func (m *Error) GetMsg() string {
 	return ""
 }
 
-type CompactTaskResponse struct {
-	Output               []byte   `protobuf:"bytes,5,opt,name=output,proto3" json:"output,omitempty"`
-	Error                *Error   `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type StartCompactResponse struct {
+	Status               JobStatus `protobuf:"varint,1,opt,name=status,proto3,enum=compaction.JobStatus" json:"status,omitempty"`
+	Error                *Error    `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
 }
 
-func (m *CompactTaskResponse) Reset()         { *m = CompactTaskResponse{} }
-func (m *CompactTaskResponse) String() string { return proto.CompactTextString(m) }
-func (*CompactTaskResponse) ProtoMessage()    {}
-func (*CompactTaskResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_e934e97986a7e94a, []int{2}
+func (m *StartCompactResponse) Reset()         { *m = StartCompactResponse{} }
+func (m *StartCompactResponse) String() string { return proto.CompactTextString(m) }
+func (*StartCompactResponse) ProtoMessage()    {}
+func (*StartCompactResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_compaction_f37a7ea11045ba34, []int{2}
 }
-func (m *CompactTaskResponse) XXX_Unmarshal(b []byte) error {
+func (m *StartCompactResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CompactTaskResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *StartCompactResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CompactTaskResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_StartCompactResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -196,36 +225,181 @@ func (m *CompactTaskResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (dst *CompactTaskResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CompactTaskResponse.Merge(dst, src)
+func (dst *StartCompactResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StartCompactResponse.Merge(dst, src)
 }
-func (m *CompactTaskResponse) XXX_Size() int {
+func (m *StartCompactResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *CompactTaskResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CompactTaskResponse.DiscardUnknown(m)
+func (m *StartCompactResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_StartCompactResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CompactTaskResponse proto.InternalMessageInfo
+var xxx_messageInfo_StartCompactResponse proto.InternalMessageInfo
 
-func (m *CompactTaskResponse) GetOutput() []byte {
+func (m *StartCompactResponse) GetStatus() JobStatus {
 	if m != nil {
-		return m.Output
+		return m.Status
 	}
-	return nil
+	return JobStatus_Running
 }
 
-func (m *CompactTaskResponse) GetError() *Error {
+func (m *StartCompactResponse) GetError() *Error {
 	if m != nil {
 		return m.Error
 	}
 	return nil
 }
 
+type QueryCompactionRequest struct {
+	DbId                 string   `protobuf:"bytes,1,opt,name=db_id,json=dbId,proto3" json:"db_id,omitempty"`
+	StoreId              int64    `protobuf:"varint,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	JobId                int64    `protobuf:"varint,3,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
+	Address              string   `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
+	Input                []byte   `protobuf:"bytes,5,opt,name=input,proto3" json:"input,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *QueryCompactionRequest) Reset()         { *m = QueryCompactionRequest{} }
+func (m *QueryCompactionRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryCompactionRequest) ProtoMessage()    {}
+func (*QueryCompactionRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_compaction_f37a7ea11045ba34, []int{3}
+}
+func (m *QueryCompactionRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryCompactionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryCompactionRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *QueryCompactionRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryCompactionRequest.Merge(dst, src)
+}
+func (m *QueryCompactionRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryCompactionRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryCompactionRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryCompactionRequest proto.InternalMessageInfo
+
+func (m *QueryCompactionRequest) GetDbId() string {
+	if m != nil {
+		return m.DbId
+	}
+	return ""
+}
+
+func (m *QueryCompactionRequest) GetStoreId() int64 {
+	if m != nil {
+		return m.StoreId
+	}
+	return 0
+}
+
+func (m *QueryCompactionRequest) GetJobId() int64 {
+	if m != nil {
+		return m.JobId
+	}
+	return 0
+}
+
+func (m *QueryCompactionRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *QueryCompactionRequest) GetInput() []byte {
+	if m != nil {
+		return m.Input
+	}
+	return nil
+}
+
+type QueryCompactionResponse struct {
+	Status               JobStatus `protobuf:"varint,1,opt,name=status,proto3,enum=compaction.JobStatus" json:"status,omitempty"`
+	Error                *Error    `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
+	Output               []byte    `protobuf:"bytes,3,opt,name=output,proto3" json:"output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *QueryCompactionResponse) Reset()         { *m = QueryCompactionResponse{} }
+func (m *QueryCompactionResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryCompactionResponse) ProtoMessage()    {}
+func (*QueryCompactionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_compaction_f37a7ea11045ba34, []int{4}
+}
+func (m *QueryCompactionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryCompactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryCompactionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *QueryCompactionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryCompactionResponse.Merge(dst, src)
+}
+func (m *QueryCompactionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryCompactionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryCompactionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryCompactionResponse proto.InternalMessageInfo
+
+func (m *QueryCompactionResponse) GetStatus() JobStatus {
+	if m != nil {
+		return m.Status
+	}
+	return JobStatus_Running
+}
+
+func (m *QueryCompactionResponse) GetError() *Error {
+	if m != nil {
+		return m.Error
+	}
+	return nil
+}
+
+func (m *QueryCompactionResponse) GetOutput() []byte {
+	if m != nil {
+		return m.Output
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*CompactTaskRequest)(nil), "compaction.CompactTaskRequest")
+	proto.RegisterType((*StartCompactRequest)(nil), "compaction.StartCompactRequest")
 	proto.RegisterType((*Error)(nil), "compaction.Error")
-	proto.RegisterType((*CompactTaskResponse)(nil), "compaction.CompactTaskResponse")
+	proto.RegisterType((*StartCompactResponse)(nil), "compaction.StartCompactResponse")
+	proto.RegisterType((*QueryCompactionRequest)(nil), "compaction.QueryCompactionRequest")
+	proto.RegisterType((*QueryCompactionResponse)(nil), "compaction.QueryCompactionResponse")
+	proto.RegisterEnum("compaction.JobStatus", JobStatus_name, JobStatus_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -239,7 +413,8 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for CompactService service
 
 type CompactServiceClient interface {
-	Compact(ctx context.Context, in *CompactTaskRequest, opts ...grpc.CallOption) (*CompactTaskResponse, error)
+	StartCompact(ctx context.Context, in *StartCompactRequest, opts ...grpc.CallOption) (*StartCompactResponse, error)
+	QueryCompactionStatus(ctx context.Context, in *QueryCompactionRequest, opts ...grpc.CallOption) (*QueryCompactionResponse, error)
 }
 
 type compactServiceClient struct {
@@ -250,9 +425,18 @@ func NewCompactServiceClient(cc *grpc.ClientConn) CompactServiceClient {
 	return &compactServiceClient{cc}
 }
 
-func (c *compactServiceClient) Compact(ctx context.Context, in *CompactTaskRequest, opts ...grpc.CallOption) (*CompactTaskResponse, error) {
-	out := new(CompactTaskResponse)
-	err := c.cc.Invoke(ctx, "/compaction.CompactService/compact", in, out, opts...)
+func (c *compactServiceClient) StartCompact(ctx context.Context, in *StartCompactRequest, opts ...grpc.CallOption) (*StartCompactResponse, error) {
+	out := new(StartCompactResponse)
+	err := c.cc.Invoke(ctx, "/compaction.CompactService/StartCompact", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *compactServiceClient) QueryCompactionStatus(ctx context.Context, in *QueryCompactionRequest, opts ...grpc.CallOption) (*QueryCompactionResponse, error) {
+	out := new(QueryCompactionResponse)
+	err := c.cc.Invoke(ctx, "/compaction.CompactService/QueryCompactionStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -262,27 +446,46 @@ func (c *compactServiceClient) Compact(ctx context.Context, in *CompactTaskReque
 // Server API for CompactService service
 
 type CompactServiceServer interface {
-	Compact(context.Context, *CompactTaskRequest) (*CompactTaskResponse, error)
+	StartCompact(context.Context, *StartCompactRequest) (*StartCompactResponse, error)
+	QueryCompactionStatus(context.Context, *QueryCompactionRequest) (*QueryCompactionResponse, error)
 }
 
 func RegisterCompactServiceServer(s *grpc.Server, srv CompactServiceServer) {
 	s.RegisterService(&_CompactService_serviceDesc, srv)
 }
 
-func _CompactService_Compact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CompactTaskRequest)
+func _CompactService_StartCompact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartCompactRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompactServiceServer).Compact(ctx, in)
+		return srv.(CompactServiceServer).StartCompact(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/compaction.CompactService/Compact",
+		FullMethod: "/compaction.CompactService/StartCompact",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompactServiceServer).Compact(ctx, req.(*CompactTaskRequest))
+		return srv.(CompactServiceServer).StartCompact(ctx, req.(*StartCompactRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CompactService_QueryCompactionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryCompactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CompactServiceServer).QueryCompactionStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/compaction.CompactService/QueryCompactionStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CompactServiceServer).QueryCompactionStatus(ctx, req.(*QueryCompactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -292,15 +495,19 @@ var _CompactService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*CompactServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "compact",
-			Handler:    _CompactService_Compact_Handler,
+			MethodName: "StartCompact",
+			Handler:    _CompactService_StartCompact_Handler,
+		},
+		{
+			MethodName: "QueryCompactionStatus",
+			Handler:    _CompactService_QueryCompactionStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "compaction.proto",
 }
 
-func (m *CompactTaskRequest) Marshal() (dAtA []byte, err error) {
+func (m *StartCompactRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -310,7 +517,7 @@ func (m *CompactTaskRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CompactTaskRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *StartCompactRequest) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -381,7 +588,7 @@ func (m *Error) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *CompactTaskResponse) Marshal() (dAtA []byte, err error) {
+func (m *StartCompactResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -391,11 +598,16 @@ func (m *CompactTaskResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CompactTaskResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *StartCompactResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
 	_ = l
+	if m.Status != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(m.Status))
+	}
 	if m.Error != nil {
 		dAtA[i] = 0x12
 		i++
@@ -406,8 +618,93 @@ func (m *CompactTaskResponse) MarshalTo(dAtA []byte) (int, error) {
 		}
 		i += n1
 	}
-	if len(m.Output) > 0 {
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *QueryCompactionRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryCompactionRequest) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.DbId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(len(m.DbId)))
+		i += copy(dAtA[i:], m.DbId)
+	}
+	if m.StoreId != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(m.StoreId))
+	}
+	if m.JobId != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(m.JobId))
+	}
+	if len(m.Address) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(len(m.Address)))
+		i += copy(dAtA[i:], m.Address)
+	}
+	if len(m.Input) > 0 {
 		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(len(m.Input)))
+		i += copy(dAtA[i:], m.Input)
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *QueryCompactionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryCompactionResponse) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Status != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(m.Status))
+	}
+	if m.Error != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintCompaction(dAtA, i, uint64(m.Error.Size()))
+		n2, err := m.Error.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n2
+	}
+	if len(m.Output) > 0 {
+		dAtA[i] = 0x1a
 		i++
 		i = encodeVarintCompaction(dAtA, i, uint64(len(m.Output)))
 		i += copy(dAtA[i:], m.Output)
@@ -427,7 +724,7 @@ func encodeVarintCompaction(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
-func (m *CompactTaskRequest) Size() (n int) {
+func (m *StartCompactRequest) Size() (n int) {
 	var l int
 	_ = l
 	l = len(m.DbId)
@@ -470,9 +767,55 @@ func (m *Error) Size() (n int) {
 	return n
 }
 
-func (m *CompactTaskResponse) Size() (n int) {
+func (m *StartCompactResponse) Size() (n int) {
 	var l int
 	_ = l
+	if m.Status != 0 {
+		n += 1 + sovCompaction(uint64(m.Status))
+	}
+	if m.Error != nil {
+		l = m.Error.Size()
+		n += 1 + l + sovCompaction(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *QueryCompactionRequest) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.DbId)
+	if l > 0 {
+		n += 1 + l + sovCompaction(uint64(l))
+	}
+	if m.StoreId != 0 {
+		n += 1 + sovCompaction(uint64(m.StoreId))
+	}
+	if m.JobId != 0 {
+		n += 1 + sovCompaction(uint64(m.JobId))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovCompaction(uint64(l))
+	}
+	l = len(m.Input)
+	if l > 0 {
+		n += 1 + l + sovCompaction(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *QueryCompactionResponse) Size() (n int) {
+	var l int
+	_ = l
+	if m.Status != 0 {
+		n += 1 + sovCompaction(uint64(m.Status))
+	}
 	if m.Error != nil {
 		l = m.Error.Size()
 		n += 1 + l + sovCompaction(uint64(l))
@@ -500,7 +843,7 @@ func sovCompaction(x uint64) (n int) {
 func sozCompaction(x uint64) (n int) {
 	return sovCompaction(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *CompactTaskRequest) Unmarshal(dAtA []byte) error {
+func (m *StartCompactRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -523,10 +866,10 @@ func (m *CompactTaskRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CompactTaskRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: StartCompactRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CompactTaskRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StartCompactRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -777,7 +1120,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CompactTaskResponse) Unmarshal(dAtA []byte) error {
+func (m *StartCompactResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -800,12 +1143,31 @@ func (m *CompactTaskResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CompactTaskResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: StartCompactResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CompactTaskResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StartCompactResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
+			}
+			m.Status = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Status |= (JobStatus(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
@@ -839,7 +1201,288 @@ func (m *CompactTaskResponse) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCompaction(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthCompaction
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryCompactionRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCompaction
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryCompactionRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryCompactionRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DbId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCompaction
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DbId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StoreId", wireType)
+			}
+			m.StoreId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.StoreId |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field JobId", wireType)
+			}
+			m.JobId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.JobId |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCompaction
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Input", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthCompaction
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Input = append(m.Input[:0], dAtA[iNdEx:postIndex]...)
+			if m.Input == nil {
+				m.Input = []byte{}
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCompaction(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthCompaction
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryCompactionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCompaction
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryCompactionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryCompactionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
+			}
+			m.Status = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Status |= (JobStatus(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCompaction
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCompaction
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Error == nil {
+				m.Error = &Error{}
+			}
+			if err := m.Error.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Output", wireType)
 			}
@@ -997,29 +1640,37 @@ var (
 	ErrIntOverflowCompaction   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("compaction.proto", fileDescriptor_compaction_e934e97986a7e94a) }
+func init() { proto.RegisterFile("compaction.proto", fileDescriptor_compaction_f37a7ea11045ba34) }
 
-var fileDescriptor_compaction_e934e97986a7e94a = []byte{
-	// 330 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x91, 0xc1, 0x4e, 0xf2, 0x40,
-	0x10, 0xc7, 0xd9, 0x0f, 0x16, 0x3e, 0x46, 0x62, 0x60, 0x40, 0x53, 0x39, 0x54, 0xd2, 0x8b, 0x5c,
-	0xac, 0x09, 0xbe, 0x81, 0xc6, 0x03, 0x89, 0xa7, 0xd5, 0x78, 0xd4, 0xb4, 0xdd, 0x4d, 0x53, 0x08,
-	0x4c, 0xdd, 0x5d, 0x78, 0x09, 0x5f, 0xc0, 0x47, 0xf2, 0xe8, 0x23, 0x98, 0xfa, 0x22, 0xa6, 0xdb,
-	0x1a, 0x30, 0xc6, 0xd3, 0xce, 0xff, 0x3f, 0x33, 0xbf, 0x99, 0xcc, 0x42, 0x3f, 0xa1, 0x55, 0x1e,
-	0x25, 0x36, 0xa3, 0x75, 0x98, 0x6b, 0xb2, 0x84, 0xb0, 0x73, 0xc6, 0xa3, 0x94, 0x52, 0x72, 0xf6,
-	0x45, 0x19, 0x55, 0x15, 0xe3, 0x41, 0x52, 0x7a, 0x89, 0x32, 0x86, 0x74, 0x6d, 0xf5, 0x56, 0xca,
-	0x46, 0x79, 0x5c, 0xa9, 0xe0, 0x85, 0x01, 0x5e, 0x57, 0x94, 0xfb, 0xc8, 0x2c, 0x85, 0x7a, 0xde,
-	0x28, 0x63, 0x71, 0x08, 0x5c, 0xc6, 0x4f, 0x99, 0xf4, 0xd8, 0x84, 0x4d, 0xbb, 0xa2, 0x25, 0xe3,
-	0xb9, 0xc4, 0x13, 0xf8, 0x6f, 0x2c, 0x69, 0x55, 0xfa, 0xff, 0x26, 0x6c, 0xda, 0x14, 0x1d, 0xa7,
-	0xe7, 0x12, 0x8f, 0xa0, 0xbd, 0x20, 0xd7, 0xd0, 0x74, 0x09, 0xbe, 0xa0, 0xb2, 0xc3, 0x83, 0x4e,
-	0x24, 0xa5, 0x56, 0xc6, 0x78, 0x2d, 0x07, 0xfa, 0x96, 0x38, 0x02, 0x9e, 0xad, 0xf3, 0x8d, 0xf5,
-	0xf8, 0x84, 0x4d, 0x7b, 0xa2, 0x12, 0xc1, 0x39, 0xf0, 0x1b, 0xad, 0x49, 0x23, 0x42, 0x2b, 0x21,
-	0xa9, 0xdc, 0x78, 0x2e, 0x5c, 0x8c, 0x7d, 0x68, 0xae, 0x4c, 0xea, 0x26, 0x77, 0x45, 0x19, 0x06,
-	0x0f, 0x30, 0xfc, 0xb1, 0xbb, 0xc9, 0x69, 0x6d, 0x14, 0x9e, 0x01, 0x57, 0x25, 0xc5, 0x95, 0x1e,
-	0xcc, 0x06, 0xe1, 0xde, 0xe1, 0x1c, 0x5e, 0x54, 0x79, 0x3c, 0x86, 0x36, 0x6d, 0xec, 0x6e, 0x8b,
-	0x5a, 0xcd, 0x1e, 0xe1, 0xb0, 0xe6, 0xde, 0x29, 0xbd, 0xcd, 0x12, 0x85, 0xb7, 0xd0, 0xa9, 0x21,
-	0xe8, 0xef, 0xe3, 0x7e, 0x9f, 0x6e, 0x7c, 0xfa, 0x67, 0xbe, 0x5a, 0x2f, 0x68, 0x5c, 0x05, 0x6f,
-	0x85, 0xcf, 0xde, 0x0b, 0x9f, 0x7d, 0x14, 0x3e, 0x7b, 0xfd, 0xf4, 0x1b, 0xd0, 0x27, 0x9d, 0x86,
-	0x36, 0x5b, 0x6e, 0xc3, 0xe5, 0xd6, 0x7d, 0x4c, 0xdc, 0x76, 0xcf, 0xe5, 0x57, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0x66, 0xa6, 0xcd, 0x64, 0xf6, 0x01, 0x00, 0x00,
+var fileDescriptor_compaction_f37a7ea11045ba34 = []byte{
+	// 457 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x53, 0x4d, 0x8e, 0xd3, 0x30,
+	0x14, 0xae, 0x27, 0x4d, 0x7f, 0xde, 0x94, 0x51, 0xfa, 0xa6, 0x1d, 0x4a, 0x17, 0xa5, 0x0a, 0x0b,
+	0x2a, 0xa4, 0x29, 0x52, 0xb9, 0x01, 0x15, 0x95, 0x06, 0xb1, 0xc1, 0x3d, 0x00, 0x72, 0x62, 0x2b,
+	0x78, 0xda, 0xc6, 0xc1, 0x76, 0x2a, 0x71, 0x04, 0x24, 0x24, 0xb6, 0x1c, 0x09, 0x76, 0x1c, 0x01,
+	0x95, 0x8b, 0xa0, 0x38, 0x99, 0x21, 0x40, 0x61, 0x87, 0x58, 0xc5, 0xdf, 0xf7, 0xbe, 0xf7, 0xde,
+	0x97, 0xcf, 0x09, 0x04, 0xb1, 0xda, 0x65, 0x2c, 0xb6, 0x52, 0xa5, 0xf3, 0x4c, 0x2b, 0xab, 0x10,
+	0x7e, 0x30, 0xe3, 0x41, 0xa2, 0x12, 0xe5, 0xe8, 0xc7, 0xc5, 0xa9, 0x54, 0x8c, 0xfb, 0x71, 0xc1,
+	0xc5, 0xc2, 0x18, 0xa5, 0x2b, 0xaa, 0xb7, 0x13, 0x96, 0x65, 0x51, 0x89, 0xc2, 0xf7, 0x04, 0xce,
+	0xd7, 0x96, 0x69, 0xbb, 0x2c, 0x47, 0x51, 0xf1, 0x26, 0x17, 0xc6, 0xe2, 0x39, 0xf8, 0x3c, 0x7a,
+	0x25, 0xf9, 0x88, 0x4c, 0xc9, 0xac, 0x4b, 0x9b, 0x3c, 0xba, 0xe2, 0x78, 0x0f, 0x3a, 0xc6, 0x2a,
+	0x2d, 0x0a, 0xfe, 0x64, 0x4a, 0x66, 0x1e, 0x6d, 0x3b, 0x7c, 0xc5, 0x71, 0x08, 0xad, 0x6b, 0xe5,
+	0x1a, 0x3c, 0x57, 0xf0, 0xaf, 0x55, 0xd1, 0x31, 0x82, 0x36, 0xe3, 0x5c, 0x0b, 0x63, 0x46, 0x4d,
+	0x37, 0xe8, 0x06, 0xe2, 0x00, 0x7c, 0x99, 0x66, 0xb9, 0x1d, 0xf9, 0x53, 0x32, 0xeb, 0xd1, 0x12,
+	0x84, 0x97, 0xe0, 0x3f, 0xd3, 0x5a, 0x69, 0x44, 0x68, 0xc6, 0x8a, 0x0b, 0xb7, 0xde, 0xa7, 0xee,
+	0x8c, 0x01, 0x78, 0x3b, 0x93, 0xb8, 0xcd, 0x5d, 0x5a, 0x1c, 0xc3, 0x14, 0x06, 0x3f, 0x9b, 0x37,
+	0x99, 0x4a, 0x8d, 0xc0, 0x4b, 0x68, 0x19, 0xcb, 0x6c, 0x6e, 0x5c, 0xff, 0xd9, 0x62, 0x38, 0xaf,
+	0x65, 0xf7, 0x5c, 0x45, 0x6b, 0x57, 0xa4, 0x95, 0x08, 0x1f, 0x82, 0x2f, 0x8a, 0xad, 0x6e, 0xf4,
+	0xe9, 0xa2, 0x5f, 0x57, 0x3b, 0x3b, 0xb4, 0xac, 0x87, 0x1f, 0x08, 0x5c, 0xbc, 0xcc, 0x85, 0x7e,
+	0xbb, 0xbc, 0x15, 0xfc, 0xe7, 0xc0, 0xde, 0x11, 0xb8, 0xfb, 0x9b, 0xa3, 0x7f, 0x9b, 0x02, 0x5e,
+	0x40, 0x4b, 0xe5, 0xb6, 0xb0, 0xe2, 0x39, 0x2b, 0x15, 0x7a, 0xb4, 0x84, 0xee, 0xed, 0x54, 0x3c,
+	0x85, 0x36, 0xcd, 0xd3, 0x54, 0xa6, 0x49, 0xd0, 0xc0, 0x3e, 0xdc, 0x59, 0xb1, 0xed, 0x36, 0x62,
+	0xf1, 0xe6, 0x85, 0x8a, 0xd9, 0x36, 0x20, 0xd8, 0x83, 0xce, 0x4a, 0xa6, 0xd2, 0xbc, 0x16, 0x3c,
+	0x38, 0xc1, 0x0e, 0x34, 0x57, 0x4c, 0x6e, 0x03, 0x6f, 0xf1, 0x99, 0xc0, 0x59, 0xf5, 0x2e, 0x6b,
+	0xa1, 0xf7, 0x32, 0x16, 0xb8, 0x86, 0x5e, 0xfd, 0x96, 0xf1, 0x7e, 0xdd, 0xd9, 0x91, 0x8f, 0x77,
+	0x3c, 0xfd, 0xb3, 0xa0, 0x8c, 0x26, 0x6c, 0x60, 0x04, 0xc3, 0x5f, 0x72, 0xab, 0x8c, 0x87, 0xf5,
+	0xe6, 0xe3, 0x97, 0x3d, 0x7e, 0xf0, 0x57, 0xcd, 0xcd, 0x8e, 0xa7, 0xe1, 0xa7, 0xc3, 0x84, 0x7c,
+	0x39, 0x4c, 0xc8, 0xd7, 0xc3, 0x84, 0x7c, 0xfc, 0x36, 0x69, 0x40, 0xa0, 0x74, 0x32, 0xb7, 0x72,
+	0xb3, 0x9f, 0x6f, 0xf6, 0xee, 0x07, 0x8c, 0x5a, 0xee, 0xf1, 0xe4, 0x7b, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0xbc, 0x7b, 0x4a, 0xbb, 0xde, 0x03, 0x00, 0x00,
 }

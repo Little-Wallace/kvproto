@@ -13,7 +13,7 @@ option java_package = "org.tikv.kvproto";
 
 
 // Dipsatch the task request to compact server..
-message CompactTaskRequest {
+message StartCompactRequest {
 	string db_id = 1; 
     int64 store_id = 2;
 	int64 job_id = 3; 
@@ -21,16 +21,40 @@ message CompactTaskRequest {
     bytes input = 5;
 }
 
+enum JobStatus {
+     Running = 0;
+     FallbackLocal = 1;
+     Finished = 2;
+     Fail = 3;
+}
+
 message Error {
 	int32 code = 1;
 	string msg = 2;
 }
 
-message CompactTaskResponse {
-    bytes output = 5;
+message StartCompactResponse {
+    JobStatus status = 1;
 	Error error = 2;
 }
 
-service CompactService {
-  rpc compact(CompactTaskRequest) returns (CompactTaskResponse) {}
+message QueryCompactionRequest {
+	string db_id = 1; 
+    int64 store_id = 2;
+	int64 job_id = 3; 
+	string address = 4; 
+    bytes input = 5;
 }
+
+message QueryCompactionResponse {
+    JobStatus status = 1;
+	Error error = 2;
+    bytes output = 3;
+}
+
+
+service CompactService {
+  rpc StartCompact(StartCompactRequest) returns (StartCompactResponse) {}
+  rpc QueryCompactionStatus(QueryCompactionRequest) returns (QueryCompactionResponse) {}
+}
+
