@@ -58,7 +58,7 @@ func (x JobStatus) String() string {
 	return proto.EnumName(JobStatus_name, int32(x))
 }
 func (JobStatus) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_c1d16a2092ecccd3, []int{0}
+	return fileDescriptor_compaction_c8cc8dc8f817672f, []int{0}
 }
 
 // Dipsatch the task request to compact server..
@@ -78,7 +78,7 @@ func (m *StartCompactRequest) Reset()         { *m = StartCompactRequest{} }
 func (m *StartCompactRequest) String() string { return proto.CompactTextString(m) }
 func (*StartCompactRequest) ProtoMessage()    {}
 func (*StartCompactRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_c1d16a2092ecccd3, []int{0}
+	return fileDescriptor_compaction_c8cc8dc8f817672f, []int{0}
 }
 func (m *StartCompactRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -161,7 +161,7 @@ func (m *Error) Reset()         { *m = Error{} }
 func (m *Error) String() string { return proto.CompactTextString(m) }
 func (*Error) ProtoMessage()    {}
 func (*Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_c1d16a2092ecccd3, []int{1}
+	return fileDescriptor_compaction_c8cc8dc8f817672f, []int{1}
 }
 func (m *Error) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -204,61 +204,6 @@ func (m *Error) GetMsg() string {
 	return ""
 }
 
-type StartCompactResponse struct {
-	Status               JobStatus `protobuf:"varint,1,opt,name=status,proto3,enum=compaction.JobStatus" json:"status,omitempty"`
-	Error                *Error    `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
-}
-
-func (m *StartCompactResponse) Reset()         { *m = StartCompactResponse{} }
-func (m *StartCompactResponse) String() string { return proto.CompactTextString(m) }
-func (*StartCompactResponse) ProtoMessage()    {}
-func (*StartCompactResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_c1d16a2092ecccd3, []int{2}
-}
-func (m *StartCompactResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *StartCompactResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_StartCompactResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *StartCompactResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StartCompactResponse.Merge(dst, src)
-}
-func (m *StartCompactResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *StartCompactResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_StartCompactResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_StartCompactResponse proto.InternalMessageInfo
-
-func (m *StartCompactResponse) GetStatus() JobStatus {
-	if m != nil {
-		return m.Status
-	}
-	return JobStatus_Running
-}
-
-func (m *StartCompactResponse) GetError() *Error {
-	if m != nil {
-		return m.Error
-	}
-	return nil
-}
-
 type QueryCompactionRequest struct {
 	DbId                 string   `protobuf:"bytes,1,opt,name=db_id,json=dbId,proto3" json:"db_id,omitempty"`
 	DbSessionId          string   `protobuf:"bytes,2,opt,name=db_session_id,json=dbSessionId,proto3" json:"db_session_id,omitempty"`
@@ -274,7 +219,7 @@ func (m *QueryCompactionRequest) Reset()         { *m = QueryCompactionRequest{}
 func (m *QueryCompactionRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryCompactionRequest) ProtoMessage()    {}
 func (*QueryCompactionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_c1d16a2092ecccd3, []int{3}
+	return fileDescriptor_compaction_c8cc8dc8f817672f, []int{2}
 }
 func (m *QueryCompactionRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -338,7 +283,7 @@ func (m *QueryCompactionRequest) GetAddress() string {
 	return ""
 }
 
-type QueryCompactionResponse struct {
+type CompactionResponse struct {
 	Status               JobStatus `protobuf:"varint,1,opt,name=status,proto3,enum=compaction.JobStatus" json:"status,omitempty"`
 	Error                *Error    `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
 	Output               []byte    `protobuf:"bytes,3,opt,name=output,proto3" json:"output,omitempty"`
@@ -347,18 +292,18 @@ type QueryCompactionResponse struct {
 	XXX_sizecache        int32     `json:"-"`
 }
 
-func (m *QueryCompactionResponse) Reset()         { *m = QueryCompactionResponse{} }
-func (m *QueryCompactionResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryCompactionResponse) ProtoMessage()    {}
-func (*QueryCompactionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_compaction_c1d16a2092ecccd3, []int{4}
+func (m *CompactionResponse) Reset()         { *m = CompactionResponse{} }
+func (m *CompactionResponse) String() string { return proto.CompactTextString(m) }
+func (*CompactionResponse) ProtoMessage()    {}
+func (*CompactionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_compaction_c8cc8dc8f817672f, []int{3}
 }
-func (m *QueryCompactionResponse) XXX_Unmarshal(b []byte) error {
+func (m *CompactionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryCompactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CompactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryCompactionResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CompactionResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -368,33 +313,33 @@ func (m *QueryCompactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (dst *QueryCompactionResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryCompactionResponse.Merge(dst, src)
+func (dst *CompactionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CompactionResponse.Merge(dst, src)
 }
-func (m *QueryCompactionResponse) XXX_Size() int {
+func (m *CompactionResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryCompactionResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryCompactionResponse.DiscardUnknown(m)
+func (m *CompactionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CompactionResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryCompactionResponse proto.InternalMessageInfo
+var xxx_messageInfo_CompactionResponse proto.InternalMessageInfo
 
-func (m *QueryCompactionResponse) GetStatus() JobStatus {
+func (m *CompactionResponse) GetStatus() JobStatus {
 	if m != nil {
 		return m.Status
 	}
 	return JobStatus_Running
 }
 
-func (m *QueryCompactionResponse) GetError() *Error {
+func (m *CompactionResponse) GetError() *Error {
 	if m != nil {
 		return m.Error
 	}
 	return nil
 }
 
-func (m *QueryCompactionResponse) GetOutput() []byte {
+func (m *CompactionResponse) GetOutput() []byte {
 	if m != nil {
 		return m.Output
 	}
@@ -404,9 +349,8 @@ func (m *QueryCompactionResponse) GetOutput() []byte {
 func init() {
 	proto.RegisterType((*StartCompactRequest)(nil), "compaction.StartCompactRequest")
 	proto.RegisterType((*Error)(nil), "compaction.Error")
-	proto.RegisterType((*StartCompactResponse)(nil), "compaction.StartCompactResponse")
 	proto.RegisterType((*QueryCompactionRequest)(nil), "compaction.QueryCompactionRequest")
-	proto.RegisterType((*QueryCompactionResponse)(nil), "compaction.QueryCompactionResponse")
+	proto.RegisterType((*CompactionResponse)(nil), "compaction.CompactionResponse")
 	proto.RegisterEnum("compaction.JobStatus", JobStatus_name, JobStatus_value)
 }
 
@@ -421,8 +365,8 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for CompactService service
 
 type CompactServiceClient interface {
-	StartCompact(ctx context.Context, in *StartCompactRequest, opts ...grpc.CallOption) (*StartCompactResponse, error)
-	QueryCompactionStatus(ctx context.Context, in *QueryCompactionRequest, opts ...grpc.CallOption) (*QueryCompactionResponse, error)
+	StartCompact(ctx context.Context, in *StartCompactRequest, opts ...grpc.CallOption) (*CompactionResponse, error)
+	QueryCompactionStatus(ctx context.Context, in *QueryCompactionRequest, opts ...grpc.CallOption) (*CompactionResponse, error)
 }
 
 type compactServiceClient struct {
@@ -433,8 +377,8 @@ func NewCompactServiceClient(cc *grpc.ClientConn) CompactServiceClient {
 	return &compactServiceClient{cc}
 }
 
-func (c *compactServiceClient) StartCompact(ctx context.Context, in *StartCompactRequest, opts ...grpc.CallOption) (*StartCompactResponse, error) {
-	out := new(StartCompactResponse)
+func (c *compactServiceClient) StartCompact(ctx context.Context, in *StartCompactRequest, opts ...grpc.CallOption) (*CompactionResponse, error) {
+	out := new(CompactionResponse)
 	err := c.cc.Invoke(ctx, "/compaction.CompactService/StartCompact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -442,8 +386,8 @@ func (c *compactServiceClient) StartCompact(ctx context.Context, in *StartCompac
 	return out, nil
 }
 
-func (c *compactServiceClient) QueryCompactionStatus(ctx context.Context, in *QueryCompactionRequest, opts ...grpc.CallOption) (*QueryCompactionResponse, error) {
-	out := new(QueryCompactionResponse)
+func (c *compactServiceClient) QueryCompactionStatus(ctx context.Context, in *QueryCompactionRequest, opts ...grpc.CallOption) (*CompactionResponse, error) {
+	out := new(CompactionResponse)
 	err := c.cc.Invoke(ctx, "/compaction.CompactService/QueryCompactionStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -454,8 +398,8 @@ func (c *compactServiceClient) QueryCompactionStatus(ctx context.Context, in *Qu
 // Server API for CompactService service
 
 type CompactServiceServer interface {
-	StartCompact(context.Context, *StartCompactRequest) (*StartCompactResponse, error)
-	QueryCompactionStatus(context.Context, *QueryCompactionRequest) (*QueryCompactionResponse, error)
+	StartCompact(context.Context, *StartCompactRequest) (*CompactionResponse, error)
+	QueryCompactionStatus(context.Context, *QueryCompactionRequest) (*CompactionResponse, error)
 }
 
 func RegisterCompactServiceServer(s *grpc.Server, srv CompactServiceServer) {
@@ -602,42 +546,6 @@ func (m *Error) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *StartCompactResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *StartCompactResponse) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	if m.Status != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintCompaction(dAtA, i, uint64(m.Status))
-	}
-	if m.Error != nil {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintCompaction(dAtA, i, uint64(m.Error.Size()))
-		n1, err := m.Error.MarshalTo(dAtA[i:])
-		if err != nil {
-			return 0, err
-		}
-		i += n1
-	}
-	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return i, nil
-}
-
 func (m *QueryCompactionRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -687,7 +595,7 @@ func (m *QueryCompactionRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *QueryCompactionResponse) Marshal() (dAtA []byte, err error) {
+func (m *CompactionResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -697,7 +605,7 @@ func (m *QueryCompactionResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryCompactionResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *CompactionResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -711,11 +619,11 @@ func (m *QueryCompactionResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintCompaction(dAtA, i, uint64(m.Error.Size()))
-		n2, err := m.Error.MarshalTo(dAtA[i:])
+		n1, err := m.Error.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n2
+		i += n1
 	}
 	if len(m.Output) > 0 {
 		dAtA[i] = 0x1a
@@ -785,22 +693,6 @@ func (m *Error) Size() (n int) {
 	return n
 }
 
-func (m *StartCompactResponse) Size() (n int) {
-	var l int
-	_ = l
-	if m.Status != 0 {
-		n += 1 + sovCompaction(uint64(m.Status))
-	}
-	if m.Error != nil {
-		l = m.Error.Size()
-		n += 1 + l + sovCompaction(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
 func (m *QueryCompactionRequest) Size() (n int) {
 	var l int
 	_ = l
@@ -828,7 +720,7 @@ func (m *QueryCompactionRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryCompactionResponse) Size() (n int) {
+func (m *CompactionResponse) Size() (n int) {
 	var l int
 	_ = l
 	if m.Status != 0 {
@@ -1167,109 +1059,6 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StartCompactResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowCompaction
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: StartCompactResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StartCompactResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
-			}
-			m.Status = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCompaction
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Status |= (JobStatus(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCompaction
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthCompaction
-			}
-			postIndex := iNdEx + msglen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Error == nil {
-				m.Error = &Error{}
-			}
-			if err := m.Error.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipCompaction(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthCompaction
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *QueryCompactionRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1446,7 +1235,7 @@ func (m *QueryCompactionRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryCompactionResponse) Unmarshal(dAtA []byte) error {
+func (m *CompactionResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1469,10 +1258,10 @@ func (m *QueryCompactionResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryCompactionResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: CompactionResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryCompactionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CompactionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1685,38 +1474,38 @@ var (
 	ErrIntOverflowCompaction   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("compaction.proto", fileDescriptor_compaction_c1d16a2092ecccd3) }
+func init() { proto.RegisterFile("compaction.proto", fileDescriptor_compaction_c8cc8dc8f817672f) }
 
-var fileDescriptor_compaction_c1d16a2092ecccd3 = []byte{
-	// 478 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x53, 0x41, 0x6e, 0xd3, 0x40,
-	0x14, 0xed, 0xd4, 0xb1, 0x93, 0xfe, 0xa4, 0x95, 0xf3, 0x9b, 0x94, 0x90, 0x45, 0x88, 0xcc, 0x82,
-	0x08, 0xa9, 0x41, 0x0a, 0x37, 0x20, 0x22, 0x52, 0x10, 0x1b, 0xec, 0x03, 0x54, 0xb6, 0x67, 0x64,
-	0xa6, 0x49, 0x66, 0xcc, 0xcc, 0x38, 0x12, 0x47, 0xe0, 0x06, 0x6c, 0xb8, 0x03, 0xc7, 0x80, 0x1d,
-	0x47, 0x40, 0xe1, 0x22, 0xc8, 0x63, 0xb7, 0x18, 0x28, 0xec, 0x90, 0x58, 0xe5, 0xff, 0xff, 0xde,
-	0xbc, 0x79, 0xf3, 0x7e, 0x0c, 0x7e, 0x2a, 0x77, 0x79, 0x9c, 0x1a, 0x2e, 0xc5, 0x3c, 0x57, 0xd2,
-	0x48, 0x84, 0x1f, 0x93, 0xf1, 0x20, 0x93, 0x99, 0xb4, 0xe3, 0x27, 0x65, 0x55, 0x31, 0xc6, 0xfd,
-	0xb4, 0x9c, 0xa5, 0x4c, 0x6b, 0xa9, 0xea, 0x51, 0x6f, 0xc7, 0x4c, 0x9c, 0x27, 0x55, 0x17, 0x7c,
-	0x24, 0x70, 0x1e, 0x99, 0x58, 0x99, 0x65, 0x25, 0x15, 0xb2, 0x37, 0x05, 0xd3, 0x06, 0xcf, 0xc1,
-	0xa5, 0xc9, 0x15, 0xa7, 0x23, 0x32, 0x25, 0xb3, 0x93, 0xb0, 0x45, 0x93, 0x35, 0xc5, 0x00, 0x4e,
-	0x69, 0x72, 0xa5, 0x99, 0xd6, 0x5c, 0x8a, 0x12, 0x3c, 0xb6, 0x60, 0x97, 0x26, 0x51, 0x35, 0x5b,
-	0x53, 0xbc, 0x0f, 0x1d, 0x6d, 0xa4, 0x62, 0x25, 0xec, 0x4c, 0xc9, 0xcc, 0x09, 0xdb, 0xb6, 0x5f,
-	0x53, 0x1c, 0x82, 0x77, 0x2d, 0xad, 0x68, 0xcb, 0x02, 0xee, 0xb5, 0x2c, 0x55, 0x47, 0xd0, 0x8e,
-	0x29, 0x55, 0x4c, 0xeb, 0x91, 0x6b, 0xf5, 0x6e, 0x5a, 0x1c, 0x80, 0xcb, 0x45, 0x5e, 0x98, 0x91,
-	0x37, 0x25, 0xb3, 0x5e, 0x58, 0x35, 0xc1, 0x25, 0xb8, 0xcf, 0x95, 0x92, 0x0a, 0x11, 0x5a, 0xa9,
-	0xa4, 0xcc, 0x5a, 0x74, 0x43, 0x5b, 0xa3, 0x0f, 0xce, 0x4e, 0x67, 0xb5, 0xb1, 0xb2, 0x0c, 0x04,
-	0x0c, 0x7e, 0x7e, 0xa0, 0xce, 0xa5, 0xd0, 0x0c, 0x2f, 0xc1, 0xd3, 0x26, 0x36, 0x85, 0xb6, 0xe7,
-	0xcf, 0x16, 0xc3, 0x79, 0x23, 0xdf, 0x17, 0x32, 0x89, 0x2c, 0x18, 0xd6, 0x24, 0x7c, 0x04, 0x2e,
-	0x2b, 0x6f, 0xb5, 0xd2, 0xdd, 0x45, 0xbf, 0xc9, 0xb6, 0x76, 0xc2, 0x0a, 0x0f, 0x3e, 0x10, 0xb8,
-	0x78, 0x55, 0x30, 0xf5, 0x76, 0x79, 0x4b, 0xf8, 0x9f, 0x42, 0x0d, 0xde, 0x11, 0xb8, 0xf7, 0x9b,
-	0xbf, 0x7f, 0x9b, 0x09, 0x5e, 0x80, 0x27, 0x0b, 0x53, 0x6e, 0xd2, 0xb1, 0x9b, 0xac, 0xbb, 0xc7,
-	0x4b, 0x38, 0xb9, 0x55, 0xc5, 0x2e, 0xb4, 0xc3, 0x42, 0x08, 0x2e, 0x32, 0xff, 0x08, 0xfb, 0x70,
-	0xba, 0x8a, 0xb7, 0xdb, 0x24, 0x4e, 0x37, 0x2f, 0x65, 0x1a, 0x6f, 0x7d, 0x82, 0x3d, 0xe8, 0xac,
-	0xb8, 0xe0, 0xfa, 0x35, 0xa3, 0xfe, 0x31, 0x76, 0xa0, 0xb5, 0x8a, 0xf9, 0xd6, 0x77, 0x16, 0x9f,
-	0x09, 0x9c, 0xd5, 0x6f, 0x89, 0x98, 0xda, 0xf3, 0x94, 0x61, 0x04, 0xbd, 0xe6, 0xce, 0xf1, 0x41,
-	0xd3, 0xd9, 0x1d, 0x7f, 0xf7, 0xf1, 0xf4, 0xcf, 0x84, 0x2a, 0x9a, 0xe0, 0x08, 0x13, 0x18, 0xfe,
-	0x92, 0x5b, 0x6d, 0x3c, 0x68, 0x1e, 0xbe, 0x7b, 0xf5, 0xe3, 0x87, 0x7f, 0xe5, 0xdc, 0xdc, 0xf1,
-	0x2c, 0xf8, 0x74, 0x98, 0x90, 0x2f, 0x87, 0x09, 0xf9, 0x7a, 0x98, 0x90, 0xf7, 0xdf, 0x26, 0x47,
-	0xe0, 0x4b, 0x95, 0xcd, 0x0d, 0xdf, 0xec, 0xe7, 0x9b, 0xbd, 0xfd, 0x64, 0x13, 0xcf, 0xfe, 0x3c,
-	0xfd, 0x1e, 0x00, 0x00, 0xff, 0xff, 0xd1, 0x6c, 0x40, 0x23, 0x10, 0x04, 0x00, 0x00,
+var fileDescriptor_compaction_c8cc8dc8f817672f = []byte{
+	// 465 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x53, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0xcd, 0x36, 0xb1, 0x93, 0x4e, 0xd2, 0xca, 0x99, 0x36, 0x55, 0xc8, 0xc1, 0x44, 0xbe, 0x10,
+	0x21, 0x35, 0x48, 0xe1, 0x0f, 0x88, 0x88, 0x14, 0xc4, 0xa5, 0xce, 0x19, 0x55, 0xb6, 0x77, 0x65,
+	0xb6, 0x49, 0x3c, 0x66, 0x77, 0x1d, 0x89, 0x3b, 0x1f, 0xc1, 0x85, 0x7f, 0xe0, 0x1b, 0x38, 0x71,
+	0xe4, 0x13, 0x50, 0xf8, 0x11, 0xe4, 0xb5, 0x29, 0x16, 0x54, 0xe2, 0xca, 0xc9, 0x33, 0xef, 0x8d,
+	0x9f, 0xde, 0xbe, 0xd9, 0x05, 0x2f, 0xa1, 0x7d, 0x1e, 0x25, 0x46, 0x52, 0x36, 0xcf, 0x15, 0x19,
+	0x42, 0xf8, 0x8d, 0x4c, 0x2e, 0x53, 0x4a, 0xc9, 0xc2, 0xcf, 0xca, 0xaa, 0x9a, 0x98, 0x0c, 0x93,
+	0x12, 0x4b, 0x84, 0xd6, 0xa4, 0x6a, 0x68, 0xb0, 0x17, 0x26, 0xca, 0xe3, 0xaa, 0x0b, 0x3e, 0x33,
+	0xb8, 0xd8, 0x98, 0x48, 0x99, 0x65, 0x25, 0x15, 0x8a, 0x77, 0x85, 0xd0, 0x06, 0x2f, 0xc0, 0xe1,
+	0xf1, 0xad, 0xe4, 0x63, 0x36, 0x65, 0xb3, 0xd3, 0xb0, 0xc3, 0xe3, 0x35, 0xc7, 0x00, 0xce, 0x78,
+	0x7c, 0xab, 0x85, 0xd6, 0x92, 0xb2, 0x92, 0x3c, 0xb1, 0x64, 0x9f, 0xc7, 0x9b, 0x0a, 0x5b, 0x73,
+	0x7c, 0x04, 0x3d, 0x6d, 0x48, 0x89, 0x92, 0x6e, 0x4f, 0xd9, 0xac, 0x1d, 0x76, 0x6d, 0xbf, 0xe6,
+	0x38, 0x02, 0xf7, 0x8e, 0xac, 0x68, 0xc7, 0x12, 0xce, 0x1d, 0x95, 0xaa, 0x63, 0xe8, 0x46, 0x9c,
+	0x2b, 0xa1, 0xf5, 0xd8, 0xb1, 0x7a, 0xbf, 0x5a, 0xbc, 0x04, 0x47, 0x66, 0x79, 0x61, 0xc6, 0xee,
+	0x94, 0xcd, 0x06, 0x61, 0xd5, 0x04, 0xd7, 0xe0, 0xbc, 0x54, 0x8a, 0x14, 0x22, 0x74, 0x12, 0xe2,
+	0xc2, 0x5a, 0x74, 0x42, 0x5b, 0xa3, 0x07, 0xed, 0xbd, 0x4e, 0x6b, 0x63, 0x65, 0x19, 0x7c, 0x62,
+	0x70, 0x75, 0x53, 0x08, 0xf5, 0x7e, 0x79, 0x1f, 0xd6, 0xff, 0x74, 0xc8, 0xe0, 0x03, 0x03, 0x6c,
+	0x5a, 0xd3, 0x39, 0x65, 0x5a, 0xe0, 0x35, 0xb8, 0xda, 0x44, 0xa6, 0xd0, 0xd6, 0xdc, 0xf9, 0x62,
+	0x34, 0x6f, 0xac, 0xff, 0x15, 0xc5, 0x1b, 0x4b, 0x86, 0xf5, 0x10, 0x3e, 0x01, 0x47, 0x94, 0xa1,
+	0x58, 0xb7, 0xfd, 0xc5, 0xb0, 0x39, 0x6d, 0xd3, 0x0a, 0x2b, 0x1e, 0xaf, 0xc0, 0xa5, 0xc2, 0x94,
+	0xa1, 0xb6, 0x6d, 0xa8, 0x75, 0xf7, 0x74, 0x09, 0xa7, 0xf7, 0xaa, 0xd8, 0x87, 0x6e, 0x58, 0x64,
+	0x99, 0xcc, 0x52, 0xaf, 0x85, 0x43, 0x38, 0x5b, 0x45, 0xbb, 0x5d, 0x1c, 0x25, 0xdb, 0xd7, 0x94,
+	0x44, 0x3b, 0x8f, 0xe1, 0x00, 0x7a, 0x2b, 0x99, 0x49, 0xfd, 0x56, 0x70, 0xef, 0x04, 0x7b, 0xd0,
+	0x59, 0x45, 0x72, 0xe7, 0xb5, 0x17, 0x5f, 0x18, 0x9c, 0xd7, 0x67, 0xd9, 0x08, 0x75, 0x90, 0x89,
+	0xc0, 0x1b, 0x18, 0x34, 0xef, 0x17, 0x3e, 0x6e, 0x3a, 0x7b, 0xe0, 0xe6, 0x4d, 0xfc, 0xe6, 0xc0,
+	0xdf, 0xc1, 0x04, 0x2d, 0x7c, 0x03, 0xa3, 0x3f, 0x16, 0x5a, 0xdb, 0x0e, 0x9a, 0xbf, 0x3e, 0xbc,
+	0xf3, 0x7f, 0xcb, 0xbf, 0x08, 0xbe, 0x1e, 0x7d, 0xf6, 0xed, 0xe8, 0xb3, 0xef, 0x47, 0x9f, 0x7d,
+	0xfc, 0xe1, 0xb7, 0xc0, 0x23, 0x95, 0xce, 0x8d, 0xdc, 0x1e, 0xe6, 0xdb, 0x83, 0x7d, 0x36, 0xb1,
+	0x6b, 0x3f, 0xcf, 0x7f, 0x06, 0x00, 0x00, 0xff, 0xff, 0x92, 0x84, 0x71, 0x07, 0x94, 0x03, 0x00,
+	0x00,
 }

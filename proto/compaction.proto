@@ -34,11 +34,6 @@ message Error {
     string msg = 2;
 }
 
-message StartCompactResponse {
-    JobStatus status = 1;
-	Error error = 2;
-}
-
 message QueryCompactionRequest {
     string db_id = 1;
     string db_session_id = 2;
@@ -47,7 +42,7 @@ message QueryCompactionRequest {
     string address = 5; 
 }
 
-message QueryCompactionResponse {
+message CompactionResponse {
     JobStatus status = 1;
     Error error = 2;
     bytes output = 3;
@@ -55,7 +50,7 @@ message QueryCompactionResponse {
 
 
 service CompactService {
-  rpc StartCompact(StartCompactRequest) returns (StartCompactResponse) {}
-  rpc QueryCompactionStatus(QueryCompactionRequest) returns (QueryCompactionResponse) {}
+  rpc StartCompact(StartCompactRequest) returns (CompactionResponse) {}
+  rpc QueryCompactionStatus(QueryCompactionRequest) returns (CompactionResponse) {}
 }
 
