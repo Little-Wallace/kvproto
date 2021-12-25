@@ -59,12 +59,19 @@ message KeyValue {
     bytes value    = 2;
 }
 
+message StatisticCache {
+    metapb.RegionEpoch region_epoch = 1;
+    bool valid = 2;
+    bytes data = 3;
+}
+
 message RaftSnapshotData {
     metapb.Region region = 1;
     uint64 file_size = 2;
     repeated KeyValue data = 3;
     uint64 version = 4;
     SnapshotMeta meta = 5;
+    StatisticCache statistic_cache = 6;
 }
 
 message StoreIdent {
