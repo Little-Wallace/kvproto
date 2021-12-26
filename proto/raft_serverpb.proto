@@ -60,9 +60,8 @@ message KeyValue {
 }
 
 message StatisticCache {
-    metapb.RegionEpoch region_epoch = 1;
-    bool valid = 2;
-    bytes data = 3;
+    bytes data = 1;
+    uint64 applied_index = 2;
 }
 
 message RaftSnapshotData {
