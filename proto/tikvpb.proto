@@ -106,7 +106,7 @@ service Tikv {
     rpc GetLockWaitInfo(kvrpcpb.GetLockWaitInfoRequest) returns (kvrpcpb.GetLockWaitInfoResponse);
 
     // Dispatch add index tasks
-    rpc DispatchAddIndexTask(kvrpcpb.DispatchAddIndexRequest) returns (kvrpcpb.DispatchAddIndexResponse)
+    rpc DispatchAddIndexTask(kvrpcpb.DispatchAddIndexRequest) returns (kvrpcpb.DispatchAddIndexResponse);
 }
 
 message BatchCommandsRequest {
