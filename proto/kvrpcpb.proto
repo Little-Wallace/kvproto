@@ -1122,3 +1122,17 @@ message RawChecksumResponse {
     uint64 total_kvs = 4;
     uint64 total_bytes = 5;
 }
+
+message DispatchAddIndexRequest {
+    uint64 jobID = 1;
+
+    bytes start_key = 2;
+    bytes end_key = 3;
+}
+
+message DispatchAddIndexResponse {
+    uint64 addedCount = 1;
+    uint64 scanCount = 2;
+    bytes nextKey = 3;
+    string err = 4;
+}

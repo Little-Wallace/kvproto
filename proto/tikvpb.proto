@@ -104,6 +104,9 @@ service Tikv {
 
     /// Get the information about lock waiting from TiKV.
     rpc GetLockWaitInfo(kvrpcpb.GetLockWaitInfoRequest) returns (kvrpcpb.GetLockWaitInfoResponse);
+
+    // Dispatch add index tasks
+    rpc DispatchAddIndexTask(kvrpcpb.DispatchAddIndexRequest) returns (kvrpcpb.DispatchAddIndexResponse)
 }
 
 message BatchCommandsRequest {
